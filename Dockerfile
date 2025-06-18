@@ -1,21 +1,23 @@
-# Step 1: Use official Node.js image
-FROM node:20-alpine
+# Use official Node.js LTS image as base
+FROM node:18-alpine
 
-# Step 2: Set working directory
+# Set working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy package files and install dependencies
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
+
+# Install dependencies (only production dependencies if you want)
 RUN npm install
 
-# Step 4: Copy rest of the app code
+# Copy all project files into the container
 COPY . .
 
-# Step 5: Build TypeScript code
+# Build the TypeScript code
 RUN npm run build
 
-# Step 6: Expose the port your app runs on (change if needed)
+# Expose the port your app listens on
 EXPOSE 3000
 
-# Step 7: Run the compiled app
+# Command to run your app
 CMD ["node", "dist/server.js"]
